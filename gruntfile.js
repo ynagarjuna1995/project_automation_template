@@ -1,8 +1,9 @@
 module.exports = function(grunt){
 
-	pkg: grunt.file.readJSON('package.json'),
-
 grunt.initConfig({
+
+	pkg: grunt.file.readJSON('package.json'),
+	//  allows us to refer to the values of properties within our package.json (Refer:http://gruntjs.com/sample-gruntfile)
 
 	// ### grunt-contrib-jshint
 	// Linting rules, run as part of `grunt validate`. See [grunt validate](#validate) and its subtasks for
@@ -12,19 +13,20 @@ grunt.initConfig({
 				client: {
 						src: ['gruntfile.js','src/js/client/**/.js'], // Specify Paths for js files for client side part in the array
 						options: {
-							config: '.client_jshintrc'
+							config: 'src/client/.jshintrc' // Add globals in the .client_jshintrc file if you are using frameworks like angularjs,emberjs,backbonejs
 						}
-				}
+				},
 				server: {
 						src: ['src/js/server/**/.js'], //Specify paths for js files for server side (nodejs) in the array
 						options:{
 							config: '.jshintrc'
 						}
-				},
+				}
 	},
 	// ### grunt-jscs
 	// Code style rules, run as part of `grunt validate`. See [grunt validate](#validate) and its subtasks for
 	// more information.
+	//for more information and detailed explanation about jscs options check : http://jshint.com/docs/options/
 	 jscs :{
 
         client: {
@@ -38,12 +40,11 @@ grunt.initConfig({
 						src: ['src/js/server/**/.js'],
 						options:{
 							config: '.jscsrc'
-					}
-
+				  	}
 				}
-	}			
+	}
         // You can add more configurations over here
-})
+});
 
 Object.keys(require('./package.json').devDependencies).forEach(function(devDep) {
   if(devDep.substring(0,6) == "grunt-") {
