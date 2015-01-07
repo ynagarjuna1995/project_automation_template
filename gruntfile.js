@@ -204,20 +204,57 @@ configureGrunt = function(grunt) {
 
 });
 
-// Originated with issue #547 grunt/grunt.
-// Load all grunt tasks
-// Find all of the task which start with `grunt-` and load them, rather than explicitly declaring them all
-// require('matchdep').filterDev(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks);
-// Matchdep is a plugin - Install through node package manager
+		// Originated with issue #547 grunt/grunt.
+		// Load all grunt tasks
+		// Find all of the task which start with `grunt-` and load them, rather than explicitly declaring them all
+		// require('matchdep').filterDev(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks);
+		// Matchdep is a plugin - Install through node package manager
 
-Object.keys(require('./package.json').devDependencies).forEach(function(devDep) {
-  if(devDep.substring(0,6) == "grunt-") {
-    grunt.loadNpmTasks(devDep);
-  }
-});
+		Object.keys(require('./package.json').devDependencies).forEach(function(devDep) {
+  			if(devDep.substring(0,6) == "grunt-") {
+   				 grunt.loadNpmTasks(devDep);
+ 			 }
+		});
 
- // Check documentation http://gruntjs.com/api/grunt.task
-grunt.registerTask('default', ['jshint','jscs','copy','concat','uglify']);
+
+		//** Custom Tasks **
+
+        // ### Init assets
+        // `grunt init` - will run an initial asset build for you
+        //
+        // Grunt init runs `bower install` as well as the standard asset build tasks which occur when you run just
+        // `grunt`. This fetches the latest client side dependencies, and moves them into their proper homes.
+        //
+        // This task is very important, and should always be run and when fetching down an updated code base just after
+        // running `npm install`.
+        //
+        // `bower` does have some quirks, such as not running as root. If you have problems please try running
+        // `grunt init --verbose` to see if there are any errors.
+        grunt.registerTask('init', 'Prepare the project for development',
+            ['shell:bower', 'default']);
+
+        // ### Default asset build
+        // `grunt` - default grunt task
+        //
+        // Compiles concatenates javascript files for the admin UI into a handful of files instead
+        // of many files, and makes sure the bower dependencies are in the right place.
+        grunt.registerTask('default', 'Build JS & templates for development',
+            ['concat:dev', 'copy:dev']);
+
+        // ### Live reload
+        // `grunt dev` - build assets on the fly whilst developing
+        //
+        // If you want Ghost to live reload for you whilst you're developing, you can do this by running `grunt dev`.
+        // This works hand-in-hand with the [livereload](http://livereload.com/) chrome extension.
+        //
+        // `grunt dev` manages starting an express server and restarting the server whenever core files change (which
+        // require a server restart for the changes to take effect) and also manage reloading the browser whenever
+        // frontend code changes.
+        //
+        // Note that the current implementation of watch only works with casper, not other themes.
+        grunt.registerTask('dev', 'Dev Mode; watch files',
+           ['default','watch']);        
+
 
 };
 // Export the configuration
