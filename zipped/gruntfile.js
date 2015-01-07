@@ -1,6 +1,5 @@
 	
 var _              = require('lodash');
-    path           = require('path'),
    	lintFiles = {
         // Linting files for client side javascript code.
         client: {
@@ -76,22 +75,7 @@ configureGrunt = function(grunt) {
         delete jscsConfig.client;
 
         return jscsConfig;
-
-     })(),   
-            // ### grunt-shell
-            // Command line tools where it's easier to run a command directly than configure a grunt plugin
-            shell: {
-                // #### Run bower install
-                // Used as part of `grunt init`. 
-                bower: {
-                    command: path.resolve(cwd + '/node_modules/.bin/bower --allow-root install'),
-                    options: {
-                        stdout: true,
-                        stdin: false
-                    }
-                },
-
-            },      
+     })(),    
 
             // ### grunt-contrib-copy
             // Copy files into their correct locations as part of building assets, or creating release zips
