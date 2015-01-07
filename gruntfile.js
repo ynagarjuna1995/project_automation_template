@@ -27,10 +27,48 @@ var _              = require('lodash');
     },
 configureGrunt = function(grunt) {
 	grunt.initConfig({
-
-	pkg: grunt.file.readJSON('package.json'),
-
 	// Allows us to refer to the values of properties within our package.json (Refer:http://gruntjs.com/sample-gruntfile)
+	pkg: grunt.file.readJSON('package.json'),
+            // ### grunt-contrib-watch
+            // Watch files and livereload in the browser during development.
+            // See the [grunt dev](#live%20reload) task for how this is used.
+            watch: {
+                shared: {
+                	// **Note:** Shared folder contains Client Specfic 
+                	// Assets,Libraries,Images,Settings etc.,
+                	// Add specific path in the array to watch the changes
+                    files: ['src/shared/**/*.js'],
+                    tasks: ['concat:dev']
+                },
+                // LiveReload monitors changes in the file system. As soon as you save a file,and the browser is refreshed.
+                // When you change a CSS file or an image, the browser is updated instantly without reloading the page.
+                // Installing respective browser extensions is Optional
+                // Check this for more info :
+                // http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-
+                livereload: {
+                	// Add Specific pathin the array
+                    files: [
+                    	'src/css/**/*.css',
+                    	'src/js/**/*.js',
+                    	// IF you are not using any templating include source of html files
+                    	// If you are using any tempating engine include source of html files
+                    	// Including this will helps to reload the images 
+                    	'src/**/*.html'  
+                    ],
+                    options: {
+                        livereload: true
+                    }
+                },
+               // express: {
+               //     files:  ['core/server.js', 'core/server/**/*.js'],
+               //     tasks:  ['express:dev'],
+               //     options: {
+                        // **Note:** Without this option specified express won't be reloaded
+               //         nospawn: true
+               //     }
+               // } 
+            },	
+
 	// ### grunt-contrib-jshint
 	// Linting rules, run as part of `grunt validate`. See [grunt validate](#validate) and its subtasks for
 	// More information.
